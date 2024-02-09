@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  #  Host name/address or host.docker.internal
+  db:
+    image: postgres:15-alpine
+    container_name: local_pgdb_HW12
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      #      Username
+      POSTGRES_USER: ivanshalaev1990
+      #      Password
+      POSTGRES_PASSWORD: password
+      #      Maintenance database
+      POSTGRES_DB: your_database
+    volumes:
+      - local_pgdb_HW12:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container_HW12
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ivanshalaev1990@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - pgadmin-data_HW12:/var/lib/pgadmin
+  testcontainer:
+    image: postgres:15-alpine
+    container_name: testcontainer_HW12
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
+    depends_on:
+      - db
+      - pgadmin
+
+volumes:
+  local_pgdb_HW12:
+  pgadmin-data_HW12:
