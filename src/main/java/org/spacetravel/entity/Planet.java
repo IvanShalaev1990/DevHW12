@@ -2,8 +2,6 @@ package org.spacetravel.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.spacetravel.enums.Planets;
 
 @Entity

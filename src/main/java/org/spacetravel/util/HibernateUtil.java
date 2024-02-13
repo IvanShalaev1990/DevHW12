@@ -6,6 +6,7 @@ import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.cfg.Configuration;
 import org.spacetravel.entity.Client;
 import org.spacetravel.entity.Planet;
+import org.spacetravel.entity.Ticket;
 
 public class HibernateUtil {
     private static final HibernateUtil INSTANCE;
@@ -21,6 +22,7 @@ public class HibernateUtil {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Client.class)
                 .addAnnotatedClass(Planet.class)
+                .addAnnotatedClass(Ticket.class)
                 .setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy())
                 .configure("hibernate.properties")
                 .buildSessionFactory();

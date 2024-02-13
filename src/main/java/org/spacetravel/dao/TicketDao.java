@@ -1,44 +1,42 @@
 package org.spacetravel.dao;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.spacetravel.entity.Client;
-
-public class ClientDao {
+import org.spacetravel.entity.Ticket;
+public class TicketDao {
     private SessionFactory sessionFactory;
     private Session session;
     private Transaction transaction;
 
-    public ClientDao(SessionFactory sessionFactory) {
+    public TicketDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public Client getClientById(long id) {
+    public Ticket getTicketById(long id) {
         session = sessionFactory.openSession();
-        Client client = session.get(Client.class, id);
+        Ticket ticket = session.get(Ticket.class, id);
         session.close();
-        return client;
+        return ticket;
     }
-
-    public int saveClient(Client client) {
+    public int saveTicket(Ticket ticket) {
         session = sessionFactory.openSession();
         session.beginTransaction();
-        session.persist(client);
+        session.persist(ticket);
         session.getTransaction().commit();
         session.close();
-        return client.getId();
+        return ticket.getId();
     }
 
-    public int deleteClientById(long id) {
+    public int deleteTicketById(long id) {
         session = sessionFactory.openSession();
-        Client client = null;
+        Ticket ticket = null;
         transaction = null;
         try {
             transaction = session.beginTransaction();
-            client = session.get(Client.class, id);
-            if (client != null) {
-                session.remove(client);
+            ticket = session.get(Ticket.class, id);
+            if (ticket != null) {
+                session.remove(ticket);
                 transaction.commit();
             }
         } catch (Exception e) {
@@ -49,20 +47,22 @@ public class ClientDao {
         } finally {
             session.close();
         }
-        return client.getId();
+        return ticket.getId();
     }
-
-    public Client uppDateClient(Client client) {
+    public Ticket uppDateTicket(Ticket ticket) {
         session = sessionFactory.openSession();
-        Client existingClient = null;
+        Ticket existingTicket = null;
         transaction = null;
         try {
             transaction = session.beginTransaction();
-            existingClient = session.get(Client.class, client.getId());
-            if (existingClient != null) {
-                existingClient.setId(client.getId());
-                existingClient.setName(client.getName());
-                session.merge(existingClient);
+            existingTicket = session.get(Ticket.class, ticket.getId());
+            if (existingTicket != null) {
+                existingTicket.setId(ticket.getId());
+                existingTicket.setClientId(ticket.getClientId());
+                existingTicket.setCreatedAt(ticket.getCreatedAt());
+                existingTicket.setToPlanet(ticket.getToPlanet());
+                existingTicket.setFromPlanet(ticket.getFromPlanet());
+                session.merge(existingTicket);
                 transaction.commit();
             }
         } catch (Exception e) {
@@ -73,6 +73,6 @@ public class ClientDao {
         } finally {
             session.close();
         }
-        return existingClient;
+        return existingTicket;
     }
 }
